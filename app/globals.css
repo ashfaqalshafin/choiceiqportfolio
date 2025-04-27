@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #3b82f6;
+  --primary-light: #93c5fd;
+  --primary-dark: #1d4ed8;
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-poppins);
+  }
+}
+
+.animate-in {
+  animation: fadeIn 0.5s ease-in-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animate-delay-500 {
+  animation-delay: 500ms;
+}
+
+.progress-bar {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #e2e8f0;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: var(--primary);
+  width: 0;
+  transition: width 1.5s ease-in-out;
+}
+
+.section-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+}
+
+.section-title {
+  @apply text-3xl md:text-4xl font-bold mb-12 text-center relative;
+}
+
+.section-title::after {
+  content: "";
+  @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-blue-500 -mb-4;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100;
+}
+
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-md transition-all duration-300;
+}
+
+.btn-outline {
+  @apply border border-blue-500 text-blue-500 hover:bg-blue-50 font-medium py-2 px-6 rounded-md transition-all duration-300;
+}
