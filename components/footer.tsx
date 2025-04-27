@@ -1,3 +1,5 @@
+import { Heart } from "lucide-react"
+
 const Footer = () => {
   const currentYear = new Date().getFullYear()
 
@@ -7,7 +9,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
             <h2 className="text-xl font-bold">
-              <span className="text-blue-400">Choice</span>
+              <span className="text-emerald-400">Choice</span>
               <span>IQ</span>
             </h2>
             <p className="text-gray-400 mt-1">Creative Coder & Editor</p>
@@ -15,7 +17,9 @@ const Footer = () => {
 
           <div className="text-center md:text-right">
             <p className="text-gray-400">&copy; {currentYear} Choice IQ. All rights reserved.</p>
-            <p className="text-gray-500 text-sm mt-1">Designed and built with ❤️ in Sylhet, Bangladesh</p>
+            <p className="text-gray-500 text-sm mt-1">
+              Designed with <Heart className="inline-block h-4 w-4 text-red-500 mx-1" /> in Sylhet, Bangladesh
+            </p>
           </div>
         </div>
       </div>

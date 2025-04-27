@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { ArrowDown } from "lucide-react"
+import { ArrowDown, FileText, Mail } from "lucide-react"
 import { getProfile, type Profile } from "@/lib/supabase"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -50,55 +51,80 @@ const Hero = () => {
     <section
       id="home"
       ref={heroRef}
-      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white relative"
+      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-emerald-50 to-white dark:from-emerald-950 dark:to-gray-900 relative"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <div className="animate-item animate-delay-100 flex justify-center mb-8">
-          {loading ? (
-            <Skeleton className="w-40 h-40 rounded-full" />
-          ) : (
-            <Avatar className="w-40 h-40 border-4 border-white shadow-lg">
-              {profile?.avatar_url ? (
-                <AvatarImage src={profile.avatar_url || "/placeholder.svg"} alt={profile?.name || "Profile"} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="text-left order-2 md:order-1">
+            <div className="animate-item animate-delay-100">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4">
+                Hi, I&apos;m{" "}
+                <span className="text-emerald-600 dark:text-emerald-400 inline-block">
+                  {loading ? "..." : profile?.name || "Shafin"}
+                </span>
+              </h1>
+            </div>
+
+            <div className="animate-item animate-delay-200">
+              <h2 className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-6">
+                {loading ? "Loading..." : profile?.title || "Creative Coder & Editor from Sylhet, Bangladesh"}
+              </h2>
+            </div>
+
+            <div className="animate-item animate-delay-300">
+              <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg">
+                {loading
+                  ? "Loading bio..."
+                  : profile?.bio ||
+                    "I blend technical skills with creative vision to build engaging digital experiences. Constantly learning and improving to create better solutions."}
+              </p>
+            </div>
+
+            <div className="animate-item animate-delay-400 flex flex-wrap gap-4">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                <FileText className="mr-2 h-4 w-4" />
+                View Resume
+              </Button>
+              <Button
+                variant="outline"
+                className="border-emerald-600 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950"
+              >
+                <Mail className="mr-2 h-4 w-4" />
+                Contact Me
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex justify-center order-1 md:order-2">
+            <div className="animate-item animate-delay-200 avatar-container w-64 h-64 md:w-80 md:h-80">
+              {loading ? (
+                <Skeleton className="w-full h-full rounded-full" />
               ) : (
-                <AvatarFallback className="text-4xl bg-blue-200 text-blue-700">
-                  {profile?.name?.charAt(0) || "S"}
-                </AvatarFallback>
+                <Avatar className="w-full h-full">
+                  {profile?.avatar_url ? (
+                    <AvatarImage
+                      src={profile.avatar_url || "/placeholder.svg"}
+                      alt={profile?.name || "Profile"}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <AvatarFallback className="text-6xl bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-200">
+                      {profile?.name?.charAt(0) || "S"}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
               )}
-            </Avatar>
-          )}
-        </div>
-        <div className="animate-item animate-delay-200">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Hi, I&apos;m{" "}
-            <span className="text-blue-600 inline-block">{loading ? "..." : profile?.name || "Shafin"}</span>
-          </h1>
-        </div>
-        <div className="animate-item animate-delay-300">
-          <h2 className="text-xl md:text-3xl text-gray-700 mb-8">
-            {loading ? "Loading..." : profile?.title || "Creative Coder & Editor from Sylhet, Bangladesh"}
-          </h2>
-        </div>
-        <div className="animate-item animate-delay-400">
-          <p className="text-gray-600 max-w-2xl mx-auto mb-10 text-lg">
-            {loading
-              ? "Loading bio..."
-              : profile?.bio ||
-                "I blend technical skills with creative vision to build engaging digital experiences. Constantly learning and improving to create better solutions."}
-          </p>
-        </div>
-        <div className="animate-item animate-delay-500 flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#projects" className="btn-primary flex items-center justify-center gap-2">
-            View My Work
-          </a>
-          <a href="#contact" className="btn-outline flex items-center justify-center gap-2">
-            Get In Touch
-          </a>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <a href="#skills" className="text-blue-500 hover:text-blue-700">
+        <a
+          href="#skills"
+          className="text-emerald-500 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-md"
+          aria-label="Scroll to skills section"
+        >
           <ArrowDown size={24} />
         </a>
       </div>

@@ -96,7 +96,7 @@ export default function Profile() {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+        <Loader2 className="h-8 w-8 text-emerald-500 animate-spin" />
         <span className="ml-2 text-gray-600">Loading profile...</span>
       </div>
     )
@@ -111,11 +111,11 @@ export default function Profile() {
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section id="profile" className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900">Profile</h2>
-          <Button onClick={() => setIsEditing(true)} className="bg-blue-600 hover:bg-blue-700">
+          <Button onClick={() => setIsEditing(true)} className="bg-emerald-600 hover:bg-emerald-700">
             <Edit className="mr-2 h-4 w-4" />
             Edit Profile
           </Button>
@@ -123,18 +123,18 @@ export default function Profile() {
 
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <div className="md:flex">
-            <div className="md:w-1/3 bg-blue-50 p-8 flex flex-col items-center justify-center">
+            <div className="md:w-1/3 bg-emerald-50 p-8 flex flex-col items-center justify-center">
               <Avatar className="w-40 h-40 border-4 border-white shadow-lg">
                 {profile.avatar_url ? (
                   <AvatarImage src={profile.avatar_url || "/placeholder.svg"} alt={profile.name} />
                 ) : (
-                  <AvatarFallback className="text-4xl bg-blue-200 text-blue-700">
+                  <AvatarFallback className="text-4xl bg-emerald-200 text-emerald-700">
                     {profile.name.charAt(0)}
                   </AvatarFallback>
                 )}
               </Avatar>
               <h3 className="mt-4 text-2xl font-bold text-gray-900">{profile.name}</h3>
-              <p className="text-blue-600 font-medium">{profile.title}</p>
+              <p className="text-emerald-600 font-medium">{profile.title}</p>
               {profile.location && (
                 <p className="mt-2 text-gray-600 text-center">
                   <span className="inline-block">📍 {profile.location}</span>
@@ -169,7 +169,7 @@ export default function Profile() {
                       href={profile.resume_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center text-blue-600 hover:text-blue-800"
+                      className="inline-flex items-center text-emerald-600 hover:text-emerald-800"
                     >
                       <span className="mr-2">View Resume</span>
                       <svg
@@ -210,14 +210,14 @@ export default function Profile() {
                     ) : profile.avatar_url ? (
                       <AvatarImage src={profile.avatar_url || "/placeholder.svg"} alt={profile.name} />
                     ) : (
-                      <AvatarFallback className="text-3xl bg-blue-200 text-blue-700">
+                      <AvatarFallback className="text-3xl bg-emerald-200 text-emerald-700">
                         {profile.name.charAt(0)}
                       </AvatarFallback>
                     )}
                   </Avatar>
                   <label
                     htmlFor="avatar-upload"
-                    className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer hover:bg-blue-700 transition-colors"
+                    className="absolute bottom-0 right-0 bg-emerald-600 text-white p-2 rounded-full cursor-pointer hover:bg-emerald-700 transition-colors"
                   >
                     <Upload className="h-4 w-4" />
                     <input
@@ -301,7 +301,7 @@ export default function Profile() {
                   <X className="mr-2 h-4 w-4" />
                   Cancel
                 </Button>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={isSaving}>
+                <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" disabled={isSaving}>
                   {isSaving ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

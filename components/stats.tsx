@@ -113,33 +113,44 @@ const Stats = () => {
   }, [loading, youtubeCount, telegramCount])
 
   return (
-    <section id="stats" className="py-20 bg-white">
+    <section id="stats" className="py-20 bg-white dark:bg-gray-900">
       <div className="section-container">
-        <h2 className="section-title">Live Stats</h2>
+        <h2 className="section-title dark:text-white">Live Stats</h2>
 
         <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
           {/* YouTube Stats */}
-          <div className="card p-8 flex flex-col items-center animate-in">
-            <Youtube className="w-16 h-16 text-red-600 mb-4" />
-            <h3 className="text-2xl font-semibold mb-2">YouTube Subscribers</h3>
+          <div className="stats-card dark:bg-gray-800 dark:border-gray-700 scroll-reveal">
+            <div className="stats-icon text-white">
+              <Youtube className="w-10 h-10 text-white" />
+            </div>
+            <h3 className="text-2xl font-semibold mb-2 dark:text-white">YouTube Subscribers</h3>
             {loading ? (
               <Skeleton className="w-24 h-10 rounded" />
             ) : (
-              <div className="text-4xl font-bold text-gray-800">{youtubeCount.toLocaleString()}</div>
+              <div className="stats-value">{youtubeCount.toLocaleString()}</div>
             )}
-            <p className="text-gray-600 mt-2 text-center">Real-time subscriber count from YouTube Data API</p>
+            <p className="text-gray-600 dark:text-gray-400 mt-2 text-center">
+              Real-time subscriber count from YouTube Data API
+            </p>
           </div>
 
           {/* Telegram Stats */}
-          <div className="card p-8 flex flex-col items-center animate-in animate-delay-100">
-            <Send className="w-16 h-16 text-blue-500 mb-4" />
-            <h3 className="text-2xl font-semibold mb-2">Telegram Members</h3>
+          <div
+            className="stats-card dark:bg-gray-800 dark:border-gray-700 scroll-reveal"
+            style={{ transitionDelay: "100ms" }}
+          >
+            <div className="stats-icon text-white">
+              <Send className="w-10 h-10 text-white" />
+            </div>
+            <h3 className="text-2xl font-semibold mb-2 dark:text-white">Telegram Members</h3>
             {loading ? (
               <Skeleton className="w-24 h-10 rounded" />
             ) : (
-              <div className="text-4xl font-bold text-gray-800">{telegramCount.toLocaleString()}</div>
+              <div className="stats-value">{telegramCount.toLocaleString()}</div>
             )}
-            <p className="text-gray-600 mt-2 text-center">Live channel member count from Telegram API</p>
+            <p className="text-gray-600 dark:text-gray-400 mt-2 text-center">
+              Live channel member count from Telegram API
+            </p>
           </div>
         </div>
       </div>

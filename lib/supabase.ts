@@ -15,6 +15,7 @@ export const supabase = createClient(supabaseUrl || "", supabaseAnonKey || "")
 // Table names
 export const PROJECTS_TABLE = "projects"
 export const PROFILES_TABLE = "profiles"
+export const HOBBIES_TABLE = "hobbies"
 
 // Project interface
 export interface Project {
@@ -42,6 +43,17 @@ export interface Profile {
   updated_at?: string
 }
 
+// Hobby interface
+export interface Hobby {
+  id: number
+  profile_id: number
+  name: string
+  icon?: string
+  description?: string
+  created_at?: string
+  updated_at?: string
+}
+
 // Fallback profile data
 const FALLBACK_PROFILE: Profile = {
   id: 1,
@@ -53,6 +65,38 @@ const FALLBACK_PROFILE: Profile = {
   email: "shafinff333@gmail.com",
   phone: "01797488769",
 }
+
+// Fallback hobbies data
+const FALLBACK_HOBBIES: Hobby[] = [
+  {
+    id: 1,
+    profile_id: 1,
+    name: "Photography",
+    icon: "camera",
+    description: "Capturing beautiful moments and landscapes",
+  },
+  {
+    id: 2,
+    profile_id: 1,
+    name: "Reading",
+    icon: "book-open",
+    description: "Exploring new worlds through books",
+  },
+  {
+    id: 3,
+    profile_id: 1,
+    name: "Hiking",
+    icon: "mountain",
+    description: "Exploring nature and staying active",
+  },
+  {
+    id: 4,
+    profile_id: 1,
+    name: "Coding",
+    icon: "code",
+    description: "Building cool projects and learning new technologies",
+  },
+]
 
 // Fallback projects data
 const FALLBACK_PROJECTS: Project[] = [
@@ -148,6 +192,86 @@ export async function updateProfile(id: number, profile: Partial<Profile>): Prom
     return data
   } catch (error) {
     console.error("Error in updateProfile:", error)
+    throw error
+  }
+}
+
+// Hobbies functions
+export async function getHobbies(profileId?: number): Promise<Hobby[]> {
+  try {
+    let query = supabase.from(HOBBIES_TABLE).select("*")
+
+    if (profileId) {
+      query = query.eq("profile_id", profileId)
+    }
+
+    const { data, error } = await query.order("created_at", { ascending: true })
+
+    if (error) {
+      // Check if the error is because the table doesn't exist
+      if (error.message.includes("relation") && error.message.includes("does not exist")) {
+        console.warn("Hobbies table doesn't exist yet. Using fallback data.")
+        return FALLBACK_HOBBIES
+      }
+
+      console.error("Error fetching hobbies:", error)
+      return FALLBACK_HOBBIES
+    }
+
+    return data || FALLBACK_HOBBIES
+  } catch (error) {
+    console.error("Error in getHobbies:", error)
+    return FALLBACK_HOBBIES
+  }
+}
+
+export async function addHobby(hobby: Omit<Hobby, "id" | "created_at" | "updated_at">): Promise<Hobby> {
+  try {
+    const { data, error } = await supabase.from(HOBBIES_TABLE).insert([hobby]).select().single()
+
+    if (error) {
+      console.error("Error adding hobby:", error)
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error("Error in addHobby:", error)
+    throw error
+  }
+}
+
+export async function updateHobby(id: number, hobby: Partial<Hobby>): Promise<Hobby> {
+  try {
+    const { data, error } = await supabase
+      .from(HOBBIES_TABLE)
+      .update({ ...hobby, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error("Error updating hobby:", error)
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error("Error in updateHobby:", error)
+    throw error
+  }
+}
+
+export async function deleteHobby(id: number): Promise<void> {
+  try {
+    const { error } = await supabase.from(HOBBIES_TABLE).delete().eq("id", id)
+
+    if (error) {
+      console.error("Error deleting hobby:", error)
+      throw error
+    }
+  } catch (error) {
+    console.error("Error in deleteHobby:", error)
     throw error
   }
 }
