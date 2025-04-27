@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { ExternalLink, Loader2, AlertTriangle, Code } from "lucide-react"
+import { ExternalLink, AlertTriangle, Code } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { getProjects, type Project } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const Projects = () => {
   const { toast } = useToast()
@@ -113,9 +114,17 @@ VALUES
         )}
 
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
-            <span className="ml-2 text-gray-600">Loading projects...</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="card overflow-hidden">
+                <Skeleton className="h-48 w-full" />
+                <div className="p-6">
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-full mb-4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : projects.length === 0 ? (
           <Alert className="bg-blue-50 border-blue-200">

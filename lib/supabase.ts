@@ -12,8 +12,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Create the Supabase client
 export const supabase = createClient(supabaseUrl || "", supabaseAnonKey || "")
 
-// Projects table name
+// Table names
 export const PROJECTS_TABLE = "projects"
+export const PROFILES_TABLE = "profiles"
 
 // Project interface
 export interface Project {
@@ -26,7 +27,34 @@ export interface Project {
   updated_at?: string
 }
 
-// Fallback projects data when table doesn't exist
+// Profile interface
+export interface Profile {
+  id: number
+  name: string
+  title: string
+  bio?: string
+  location?: string
+  avatar_url?: string
+  resume_url?: string
+  email?: string
+  phone?: string
+  created_at?: string
+  updated_at?: string
+}
+
+// Fallback profile data
+const FALLBACK_PROFILE: Profile = {
+  id: 1,
+  name: "Shafin",
+  title: "Creative Coder & Editor",
+  bio: "I blend technical skills with creative vision to build engaging digital experiences. Constantly learning and improving to create better solutions.",
+  location: "Sylhet, Bangladesh",
+  avatar_url: "https://via.placeholder.com/300x300?text=Shafin",
+  email: "shafinff333@gmail.com",
+  phone: "01797488769",
+}
+
+// Fallback projects data
 const FALLBACK_PROJECTS: Project[] = [
   {
     id: 1,
@@ -77,5 +105,71 @@ export async function getProjects(): Promise<Project[]> {
   } catch (error) {
     console.error("Error in getProjects:", error)
     return FALLBACK_PROJECTS
+  }
+}
+
+// Profile functions
+export async function getProfile(): Promise<Profile> {
+  try {
+    const { data, error } = await supabase.from(PROFILES_TABLE).select("*").limit(1).single()
+
+    if (error) {
+      // Check if the error is because the table doesn't exist
+      if (error.message.includes("relation") && error.message.includes("does not exist")) {
+        console.warn("Profiles table doesn't exist yet. Using fallback data.")
+        return FALLBACK_PROFILE
+      }
+
+      console.error("Error fetching profile:", error)
+      return FALLBACK_PROFILE
+    }
+
+    return data || FALLBACK_PROFILE
+  } catch (error) {
+    console.error("Error in getProfile:", error)
+    return FALLBACK_PROFILE
+  }
+}
+
+export async function updateProfile(id: number, profile: Partial<Profile>): Promise<Profile> {
+  try {
+    const { data, error } = await supabase
+      .from(PROFILES_TABLE)
+      .update({ ...profile, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error("Error updating profile:", error)
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error("Error in updateProfile:", error)
+    throw error
+  }
+}
+
+// Function to upload avatar image
+export async function uploadAvatar(file: File): Promise<string> {
+  try {
+    const fileExt = file.name.split(".").pop()
+    const fileName = `avatar-${Date.now()}.${fileExt}`
+    const filePath = `avatars/${fileName}`
+
+    const { error } = await supabase.storage.from("profile-images").upload(filePath, file)
+
+    if (error) {
+      console.error("Error uploading avatar:", error)
+      throw error
+    }
+
+    const { data } = supabase.storage.from("profile-images").getPublicUrl(filePath)
+    return data.publicUrl
+  } catch (error) {
+    console.error("Error in uploadAvatar:", error)
+    throw error
   }
 }
